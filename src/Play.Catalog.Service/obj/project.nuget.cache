@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "dmpoA8ZxXwe9K4rpten6AIiwOuq0GTFIGi7A+UPwSdVbjvs/hKbo3n/qZrJqwXwLY1PcIac49mz2hF39Ay1IWw==",
+  "dgSpecHash": "tU3YI7F8KsoIMS9tH6cwxjjwWqsJVhkfleIwhfmmO+4HtzoIRWesHCG50xfSPZBHYw4w1nOB8nDfgw5ucqr0qg==",
   "success": true,
-  "projectFilePath": "c:\\Users\\Ibelyaev\\source\\repos\\temp\\PlayEconomySystem\\Play.Catalog\\src\\Play.Catalog.Service\\Play.Catalog.Service.csproj",
+  "projectFilePath": "C:\\Users\\Ibelyaev\\source\\repos\\temp\\PlayEconomySystem\\Play.Catalog\\src\\Play.Catalog.Service\\Play.Catalog.Service.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Ibelyaev\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\5.0.1\\microsoft.aspnetcore.authentication.jwtbearer.5.0.1.nupkg.sha512",
     "C:\\Users\\Ibelyaev\\.nuget\\packages\\microsoft.aspnetcore.authentication.openidconnect\\5.0.1\\microsoft.aspnetcore.authentication.openidconnect.5.0.1.nupkg.sha512",
