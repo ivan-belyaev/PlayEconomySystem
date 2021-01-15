@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\Ibelyaev\\source\\repos\\temp\\PlayEconomySystem\\Play.Catalog\\src\\Play.Catalog.Service\\Play.Catalog.Service.csproj": {}
+    "C:\\Users\\Ibelyaev\\source\\repos\\temp\\PlayEconomySystem\\Play.Catalog\\src\\Play.Catalog.Service\\Play.Catalog.Service.csproj": {}
   },
   "projects": {
-    "c:\\Users\\Ibelyaev\\source\\repos\\temp\\PlayEconomySystem\\Play.Catalog\\src\\Play.Catalog.Service\\Play.Catalog.Service.csproj": {
+    "C:\\Users\\Ibelyaev\\source\\repos\\temp\\PlayEconomySystem\\Play.Catalog\\src\\Play.Catalog.Service\\Play.Catalog.Service.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\Ibelyaev\\source\\repos\\temp\\PlayEconomySystem\\Play.Catalog\\src\\Play.Catalog.Service\\Play.Catalog.Service.csproj",
+        "projectUniqueName": "C:\\Users\\Ibelyaev\\source\\repos\\temp\\PlayEconomySystem\\Play.Catalog\\src\\Play.Catalog.Service\\Play.Catalog.Service.csproj",
         "projectName": "Play.Catalog.Service",
-        "projectPath": "c:\\Users\\Ibelyaev\\source\\repos\\temp\\PlayEconomySystem\\Play.Catalog\\src\\Play.Catalog.Service\\Play.Catalog.Service.csproj",
+        "projectPath": "C:\\Users\\Ibelyaev\\source\\repos\\temp\\PlayEconomySystem\\Play.Catalog\\src\\Play.Catalog.Service\\Play.Catalog.Service.csproj",
         "packagesPath": "C:\\Users\\Ibelyaev\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\Ibelyaev\\source\\repos\\temp\\PlayEconomySystem\\Play.Catalog\\src\\Play.Catalog.Service\\obj\\",
+        "outputPath": "C:\\Users\\Ibelyaev\\source\\repos\\temp\\PlayEconomySystem\\Play.Catalog\\src\\Play.Catalog.Service\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\"
