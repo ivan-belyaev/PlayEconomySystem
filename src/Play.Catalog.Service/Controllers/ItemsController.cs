@@ -19,8 +19,7 @@ namespace Play.Catalog.Service.Controllers
         public async Task<ActionResult<IEnumerable<ItemDto>>> GetAsync()
         {
             var items = (await itemsRepository.GetAllAsync())
-                        .Select(item => item.AsDto());
-
+                .Select(item => item.AsDto());
             return Ok(items);
         }
 
@@ -82,7 +81,7 @@ namespace Play.Catalog.Service.Controllers
                 return NotFound();
             }
 
-            await itemsRepository.RemoveAsync(id);
+            await itemsRepository.RemoveAsync(item.Id);
 
             return NoContent();
         }
