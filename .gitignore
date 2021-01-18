@@ -1,4 +1,7 @@
-.vs
-/src/Play.Catalog.Service/bin/
-/src/Play.Catalog.Service/obj/
+Play.Catalog/.vs
+Play.Inventory/.vs
+Play.Catalog/src/Play.Catalog.Service/bin/
+Play.Catalog/src/Play.Catalog.Service/obj/
+Play.Inventory/src/Play.Inventory.Service/bin/
+Play.Inventory/src/Play.Inventory.Service/obj/
 
