@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GreenPipes;
+using MassTransit;
+using MassTransit.Definition;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -15,6 +18,7 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
+using Play.Inventory.Consumers;
 using Play.Inventory.Repositories;
 using Play.Inventory.Service.Clients;
 using Play.Inventory.Service.Settings;
@@ -49,43 +53,31 @@ namespace Play.Inventory.Service
             });
 
             services.AddSingleton<IInventoryItemsRepository, InventoryItemsRepository>();
-
-            services.AddHttpClient<CatalogClient>(client =>
-            {
-                client.BaseAddress = new Uri("https://localhost:5001");
-            })
-            .AddTransientHttpErrorPolicy(builder => builder.WaitAndRetryAsync(
-                10,
-                retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
-                onRetry: (outcome, timespan, retryAttempt) =>
-                {
-                    var serviceProvider = services.BuildServiceProvider();
-                    serviceProvider.GetService<ILogger<CatalogClient>>()?
-                        .LogWarning("Delaying for {delay} seconds, then making retry {retry}", timespan.TotalSeconds, retryAttempt);
-                }
-            ))
-            .AddTransientHttpErrorPolicy(builder => builder.CircuitBreakerAsync(
-                3,
-                TimeSpan.FromSeconds(15),
-                onBreak: (outcome, timespan) =>
-                {
-                    var serviceProvider = services.BuildServiceProvider();
-                    serviceProvider.GetService<ILogger<CatalogClient>>()?
-                        .LogWarning("Opening the circuit for {delay} seconds...", timespan.TotalSeconds);
-                },
-                onReset: () =>
-                {
-                    var serviceProvider = services.BuildServiceProvider();
-                    serviceProvider.GetService<ILogger<CatalogClient>>()?
-                        .LogWarning("Closing the circuit...");
-                }
-            ));
+            services.AddSingleton<ICatalogItemsRepository, CatalogItemsRepository>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Play.Inventory.Service", Version = "v1" });
             });
+
+            services.AddMassTransit(x =>
+            {
+                x.AddConsumersFromNamespaceContaining<CatalogItemCreatedConsumer>();
+
+                x.UsingRabbitMq((context, configurator) =>
+                {
+                    var rabbitMqSettings = Configuration.GetSection(nameof(RabbitMQSettings)).Get<RabbitMQSettings>();
+                    configurator.Host(rabbitMqSettings.Host);
+                    configurator.ConfigureEndpoints(context, new KebabCaseEndpointNameFormatter(serviceSettings.ServiceName, false));
+                    configurator.UseMessageRetry(r =>
+                    {
+                        r.Interval(3, TimeSpan.FromSeconds(5));
+                    });
+                });
+            });
+
+            services.AddMassTransitHostedService();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
