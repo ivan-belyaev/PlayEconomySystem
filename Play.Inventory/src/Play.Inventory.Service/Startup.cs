@@ -16,6 +16,7 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
 using Play.Inventory.Repositories;
+using Play.Inventory.Service.Clients;
 using Play.Inventory.Service.Settings;
 
 namespace Play.Inventory.Service
@@ -47,6 +48,11 @@ namespace Play.Inventory.Service
             });
 
             services.AddSingleton<IInventoryItemsRepository, InventoryItemsRepository>();
+
+            services.AddHttpClient<CatalogClient>(client =>
+            {
+                client.BaseAddress = new Uri("https://localhost:5001");
+            });
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
