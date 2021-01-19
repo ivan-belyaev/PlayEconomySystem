@@ -18,6 +18,7 @@ using MongoDB.Driver;
 using Play.Inventory.Repositories;
 using Play.Inventory.Service.Clients;
 using Play.Inventory.Service.Settings;
+using Polly;
 
 namespace Play.Inventory.Service
 {
@@ -52,7 +53,33 @@ namespace Play.Inventory.Service
             services.AddHttpClient<CatalogClient>(client =>
             {
                 client.BaseAddress = new Uri("https://localhost:5001");
-            });
+            })
+            .AddTransientHttpErrorPolicy(builder => builder.WaitAndRetryAsync(
+                10,
+                retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
+                onRetry: (outcome, timespan, retryAttempt) =>
+                {
+                    var serviceProvider = services.BuildServiceProvider();
+                    serviceProvider.GetService<ILogger<CatalogClient>>()?
+                        .LogWarning("Delaying for {delay} seconds, then making retry {retry}", timespan.TotalSeconds, retryAttempt);
+                }
+            ))
+            .AddTransientHttpErrorPolicy(builder => builder.CircuitBreakerAsync(
+                3,
+                TimeSpan.FromSeconds(15),
+                onBreak: (outcome, timespan) =>
+                {
+                    var serviceProvider = services.BuildServiceProvider();
+                    serviceProvider.GetService<ILogger<CatalogClient>>()?
+                        .LogWarning("Opening the circuit for {delay} seconds...", timespan.TotalSeconds);
+                },
+                onReset: () =>
+                {
+                    var serviceProvider = services.BuildServiceProvider();
+                    serviceProvider.GetService<ILogger<CatalogClient>>()?
+                        .LogWarning("Closing the circuit...");
+                }
+            ));
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
